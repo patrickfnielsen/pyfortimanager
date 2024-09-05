@@ -1,12 +1,32 @@
-from pyfortimanager.core.fortimanager import FortiManager
+from typing import Optional
+from pyfortimanager.core.api import BaseModel
+from pyfortimanager.core.filter import FiltersType
 
 
-class FortiSwitches(FortiManager):
+class FortiSwitches(BaseModel):
     """API class for FortiSwitches.
     """
 
     def __init__(self, **kwargs):
         super(FortiSwitches, self).__init__(**kwargs)
+
+    def filter(self, filters: FiltersType, fields: Optional[list[str]] = None, adom: str = None):
+        params = {
+            "filter": filters.generate(),
+            "loadsub": 0,
+            "url": f"/pm/config/adom/{adom or self.api.adom}/obj/fsp/managed-switch",
+            "scope member": [
+                {
+                    "name": "All_FortiGate"
+                }
+            ]
+        }
+
+        if fields:
+            params["fields"] = fields
+
+        result = self.post(method="get", params=params)
+        return result
 
     def all(self, fortigate: str = None, vdom: str = "root", switch_id: str = None, adom: str = None):
         """Retrieves all FortiSwitches or a single FortiSwitch from a FortiGate.

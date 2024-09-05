@@ -1,12 +1,12 @@
-from pyfortimanager.core.fortimanager import FortiManager
+from pyfortimanager.core.api import BaseModel
 
 
-class Policy_Packages(FortiManager):
+class PolicyPackages(BaseModel):
     """API class for Policy Packages in Policy & Objects.
     """
 
     def __init__(self, **kwargs):
-        super(Policy_Packages, self).__init__(**kwargs)
+        super(PolicyPackages, self).__init__(**kwargs)
 
     def all(self, name: str = None, adom: str = None):
         """Retrieves all policy packages or a single policy package with members.

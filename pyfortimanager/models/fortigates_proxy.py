@@ -1,12 +1,12 @@
-from pyfortimanager.core.fortimanager import FortiManager
+from pyfortimanager.core.api import BaseModel
 
 
-class FortiGates_Proxy(FortiManager):
+class FortiGatesProxy(BaseModel):
     """API class for proxy calls to FortiGates. Send and receive API calls to/from an online FortiGate.
     """
 
     def __init__(self, **kwargs):
-        super(FortiGates_Proxy, self).__init__(**kwargs)
+        super(FortiGatesProxy, self).__init__(**kwargs)
 
     def status(self, fortigate: str, adom: str = None, timeout: int = None):
         """Retrieve basic system status on the FortiGate.
@@ -29,7 +29,7 @@ class FortiGates_Proxy(FortiManager):
                     ],
                     "action": "get",
                     "timeout": timeout or self.api.proxy_timeout,
-                    "resource": f"/api/v2/monitor/system/status"
+                    "resource": "/api/v2/monitor/system/status"
                 }
         }
 
@@ -166,5 +166,89 @@ class FortiGates_Proxy(FortiManager):
         # Optional fields
         if interface:
             params['data']['resource'] += f"&interface={interface}"
+
+        return self.post(method="exec", params=params)
+
+
+    def reboot(self, fortigate: str, adom: str = None, timeout: int = None):
+        """Reboots a given fortigate
+
+        Args:
+            fortigate (str): Name of the FortiGate.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+            timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "post",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": "/api/v2/monitor/system/os/reboot"
+                }
+        }
+
+
+        return self.post(method="exec", params=params)
+
+
+    def device_query(self, fortigate: str, adom: str = None, timeout: int = None):
+        """Retrieves detected devices from a fortigate
+
+        Args:
+            fortigate (str): Name of the FortiGate.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+            timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": "/api/v2/monitor/user/device/query?&with_fortilink=true"
+                }
+        }
+
+        return self.post(method="exec", params=params)
+
+    def monitor_ipsec(self, fortigate: str, adom: str = None, timeout: int = None):
+        """Retrieves ipsec status from a fortiate
+
+        Args:
+            fortigate (str): Name of the FortiGate.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+            timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": "/api/v2/monitor/vpn/ipsec?global=1"
+                }
+        }
 
         return self.post(method="exec", params=params)

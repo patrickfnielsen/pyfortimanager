@@ -1,12 +1,27 @@
-from pyfortimanager.core.fortimanager import FortiManager
+from typing import Optional
+from pyfortimanager.core.api import BaseModel
+from pyfortimanager.core.filter import FiltersType
 
 
-class FortiGates(FortiManager):
+class FortiGates(BaseModel):
     """API class for FortiGates.
     """
 
     def __init__(self, **kwargs):
         super(FortiGates, self).__init__(**kwargs)
+
+    def filter(self, filters: FiltersType, fields: Optional[list[str]] = None):
+        params = {
+            "filter": filters.generate(),
+            "loadsub": 0,
+            "url": "/dvmdb/device"
+        }
+
+        if fields:
+            params["fields"] = fields
+
+        result = self.post(method="get", params=params)
+        return result
 
     def all(self, fortigate: str = None, adom: str = None):
         """Retrieves all FortiGates or a single FortiGate.

@@ -1,7 +1,7 @@
-from pyfortimanager.core.fortimanager import FortiManager
+from pyfortimanager.core.api import BaseModel
 
 
-class MetadataVariables(FortiManager):
+class MetadataVariables(BaseModel):
     """API class for Metadata Variables in Policy & Objects.
     """
 
