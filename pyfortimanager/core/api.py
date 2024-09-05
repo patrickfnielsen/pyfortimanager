@@ -85,8 +85,13 @@ class BaseModel:
             result.data = []
         else:
             objects = []
-            for value in api_result.get("data"):
-                objects.append(fmg_type(**value) if not isinstance(fmg_type, dict) else value)
+            data = api_result.get("data")
+            if isinstance(data, dict):
+                objects.append(fmg_type(**data) if not isinstance(fmg_type, dict) else data)
+            elif isinstance(data, list):
+                for value in data:
+                    objects.append(fmg_type(**value) if not isinstance(fmg_type, dict) else value)
+
             result.data = objects
 
         result.status = api_result.get("status", {}).get("code", 400)
