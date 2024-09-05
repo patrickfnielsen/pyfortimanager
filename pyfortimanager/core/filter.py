@@ -45,8 +45,8 @@ class F:
             raise ValueError("F only accepts one filter condition at a time!")
         
         # support things like switch-id by using underscore, and then replacing it
-        rx = re.compile(r'[a-zA-Z0-9](_)[a-zA-Z0-9]')
-        kwargs = { rx.sub("-", key):value for key, value in kwargs.items() }
+        rx = re.compile(r'([a-zA-Z0-9])(_)([a-zA-Z0-9])')
+        kwargs = { rx.sub(r"\g<1>-\g<3>", key):value for key, value in kwargs.items() }
 
         for key, value in kwargs.items():
             if "__" in key:
