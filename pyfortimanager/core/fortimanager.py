@@ -1,5 +1,6 @@
 from pyfortimanager.models.adoms import Adoms
 from pyfortimanager.models.cli_template_groups import CLITemplateGroups
+from pyfortimanager.models.cli_templates import CLITemplates
 from pyfortimanager.models.device_groups import DeviceGroups
 from pyfortimanager.models.dynamic_port_policy import DynamicPortPolicy
 from pyfortimanager.models.fortiaps_proxy import FortiAPsProxy
@@ -41,6 +42,12 @@ class FortiManager(object):
         """Endpoints related to CLI Template Groups.
         """
         return CLITemplateGroups(api=self)
+
+    @property
+    def cli_templates(self):
+        """Endpoints related to CLI Templates.
+        """
+        return CLITemplates(api=self)
 
     @property
     def device_groups(self):
