@@ -22,12 +22,6 @@ class MetadataVariables(BaseModel):
         params = {
             "url": f"/pm/config/adom/{adom or self.api.adom}/obj/fmg/variable",
             "option": [
-                "get used",
-                "get flags",
-                "get devobj mapping",
-                "get meta",
-                "extra info",
-                "no loadsub",
                 "scope member"
             ]
         }
