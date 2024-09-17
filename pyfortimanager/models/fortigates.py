@@ -257,3 +257,35 @@ class FortiGates(BaseModel):
         }
 
         return self.post(method="exec", params=params)
+
+    def meta_variables(self, fortigate: str = None, adom: str = None):
+        """Retrieves all metadata variables for a fortigate.
+
+        Args:
+            fortigate (str): Name of the FortiGate to delete.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": f"/pm/config/adom/{adom or self.api.adom}/obj/fmg/variable",
+            "sub fetch": {
+                "dynamic_mapping": {
+                    "scope member": [
+                        {
+                            "name": fortigate,
+                            "vdom": "global"
+                        }
+                    ],
+                    "subfetch count": [
+                        "==",
+                        1
+                    ]
+                }
+            },
+            "subfetch filter": 1,
+        }
+
+        return self.post(method="get", params=params)
