@@ -11,6 +11,15 @@ class FortiGates(BaseModel):
         super(FortiGates, self).__init__(**kwargs)
 
     def filter(self, filters: FiltersType, fields: Optional[list[str]] = None):
+        """Retrieves a list of FortiGates based on filters.
+
+        Args:
+            filters (FiltersType): filters
+            fields (Optional[list[str]], optional): fields. Defaults to all fields.
+
+        Returns:
+            FMGResponse[dict]: data
+        """
         params = {
             "filter": filters.generate(),
             "loadsub": 0,
