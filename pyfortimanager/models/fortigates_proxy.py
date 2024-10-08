@@ -169,7 +169,6 @@ class FortiGatesProxy(BaseModel):
 
         return self.post(method="exec", params=params)
 
-
     def reboot(self, fortigate: str, adom: str = None, timeout: int = None):
         """Reboots a given fortigate
 
@@ -198,7 +197,6 @@ class FortiGatesProxy(BaseModel):
 
         return self.post(method="exec", params=params)
 
-
     def device_query(self, fortigate: str, adom: str = None, timeout: int = None):
         """Retrieves detected devices from a fortigate
 
@@ -226,7 +224,7 @@ class FortiGatesProxy(BaseModel):
 
         return self.post(method="exec", params=params)
 
-    def monitor_ipsec(self, fortigate: str, adom: str = None, timeout: int = None):
+    def vpn_ipsec(self, fortigate: str, adom: str = None, timeout: int = None):
         """Retrieves ipsec status from a fortiate
 
         Args:
@@ -248,6 +246,60 @@ class FortiGatesProxy(BaseModel):
                     "action": "get",
                     "timeout": timeout or self.api.proxy_timeout,
                     "resource": "/api/v2/monitor/vpn/ipsec?global=1"
+                }
+        }
+
+        return self.post(method="exec", params=params)
+
+    def sdwan_sla_log(self, fortigate: str, adom: str = None, vdom: str = "*", timeout: int = None):
+        """Retrieve the SDWAN SLA log for a specific FortiGate device.
+
+        Args:
+            fortigate (str): The name or serial number of the FortiGate device.
+            adom (str, optional): The administrative domain of the device. Defaults to None.
+            vdom (str, optional): The virtual domain of the device. Defaults to "*".
+            timeout (int, optional): The timeout value for the request. Defaults to None.
+        Returns:
+            dict: The response from the API containing the SLA log information.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": f"/api/v2/monitor/virtual-wan/sla-log?vdom={vdom}"
+                }
+        }
+
+        return self.post(method="exec", params=params)
+
+    def sdwan_interface_log(self, fortigate: str, adom: str = None, vdom: str = "*", timeout: int = None):
+        """Retrieve the SDWAN interface log for a specific FortiGate device.
+
+        Args:
+            fortigate (str): The name or serial number of the FortiGate device.
+            adom (str, optional): The administrative domain of the device. Defaults to None.
+            vdom (str, optional): The virtual domain of the device. Defaults to "*".
+            timeout (int, optional): The timeout value for the request. Defaults to None.
+        Returns:
+            dict: The response from the API containing the SLA log information.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": f"/api/v2/monitor/virtual-wan/interface-log?vdom={vdom}"
                 }
         }
 
