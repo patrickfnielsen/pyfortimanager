@@ -156,13 +156,13 @@ class FortiSwitches(BaseModel):
 
         return self.post(method="update", params=params)
 
-    def add_to_adom(self, name: str, platform: str, switch_id: str, fortigate: str, vdom: str = "root", interface: str = "Fortilink", adom: str = None, prefer_img_ver: str = None):
+    def add_to_adom(self, sn: str, platform: str, switch_id: str, fortigate: str, vdom: str = "root", interface: str = "Fortilink", adom: str = None, prefer_img_ver: str = None):
         """Adds a new FortiSwitch as a model device in the FortiSwitch Manager (ADOM).
 
         Args:
-            name (str): Name of the FortiSwitch.
+            sn (str): Serial number of the FortiSwitch.
             platform (str): Model name of the FortiSwitch. Ex. FortiSwitch-108E-FPOE.
-            switch_id (str): Serial number of the FortiSwitch.
+            switch_id (str): Name of the FortiSwitch. 
             interface (str): Name of the FortiGate interface connected to the FortiSwitch.
             fortigate (str): Name of the FortiGate connected to the FortiSwitch.
             vdom (str): Name of the virtual domain for the FortiGate.
@@ -177,7 +177,7 @@ class FortiSwitches(BaseModel):
             "url": f"/pm/config/adom/{adom or self.api.adom}/obj/fsp/managed-switch",
             "data": {
                 "switch-id": switch_id,
-                "name": name,
+                "sn": sn,
                 "state": 2,
                 "is-model": 1,
                 "platform": platform,
