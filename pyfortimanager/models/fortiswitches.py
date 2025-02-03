@@ -197,13 +197,12 @@ class FortiSwitches(BaseModel):
 
         return self.post(method="add", params=params)
 
-    def add_to_fortigate(self, name: str, switch_id: str, platform: str, fortigate: str, vdom: str = "root", prefer_img_ver: str = None):
+    def add_to_fortigate(self, sn: str, switch_id: str, fortigate: str, vdom: str = "root", prefer_img_ver: str = None):
         """Adds a new FortiSwitch as a model device on the FortiGate in the FortiSwitch Manager.
 
         Args:
-            name (str): Name of the FortiSwitch.
-            switch_id (str): Serial number of the FortiSwitch.
-            platform (str): Model name of the FortiSwitch. Ex. FortiSwitch-108E-FPOE.
+            sn (str): Serial number of the FortiSwitch.
+            switch_id (str): Name of the FortiSwitch. 
             fortigate (str): Name of the FortiGate connected to the FortiSwitch.
             vdom (str): Name of the virtual domain for the FortiGate.
             prefer_img_ver (str, optional): Enforce the firmware version for the FortiSwitch. Ex. 7.2.5-b0453.
@@ -215,11 +214,8 @@ class FortiSwitches(BaseModel):
         params = {
             "url": f"/pm/config/device/{fortigate}/vdom/{vdom}/switch-controller/managed-switch",
             "data": {
-                "name": name,
+                "sn": sn,
                 "switch-id": switch_id,
-                "state": 2,
-                "is-model": 1,
-                "platform": platform,
             }
         }
 
