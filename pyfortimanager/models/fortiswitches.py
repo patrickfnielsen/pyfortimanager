@@ -330,3 +330,31 @@ class FortiSwitches(BaseModel):
         }
 
         return self.post(method="delete", params=params)
+
+    def replace(self, switch_id: str, new_serial: str, fortigate: str, vdom: str = "root", adom: str = None):
+        """Replaces a FortiSwitch with another.
+
+        Args:
+            switch_id (str): Name of the FortiSwitch to replace.
+            new_serial (str): New serial number.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": f"pm/config/adom/{adom or self.api.adom}/obj/fsp/managed-switch/{switch_id}",
+            "data": {
+                "_replacement-id": new_serial,
+            },
+            "scope member": [
+                {
+                    "name": fortigate,
+                    "vdom": vdom
+                }
+            ],
+            "no-dirty-pkg": 1
+        }
+
+        return self.post(method="update", params=params)

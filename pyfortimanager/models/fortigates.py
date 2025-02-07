@@ -267,6 +267,27 @@ class FortiGates(BaseModel):
 
         return self.post(method="exec", params=params)
 
+    def replace(self, fortigate: str, new_serial: str, adom: str = None):
+        """Replaces a FortiGate with another.
+
+        Args:
+            fortigate (str): Name of the FortiGate to replace.
+            new_serial (str): New serial number.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": f"/dvmdb/adom/{adom or self.api.adom}/device/replace/sn/{fortigate}",
+            "data": {
+                "sn": new_serial,
+            }
+        }
+
+        return self.post(method="exec", params=params)
+
     def meta_variables(self, fortigate: str = None, adom: str = None):
         """Retrieves all metadata variables for a fortigate.
 
