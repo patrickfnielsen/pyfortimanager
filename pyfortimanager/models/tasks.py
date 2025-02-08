@@ -49,7 +49,7 @@ class Tasks(BaseModel):
 
             task = self.get(task_id)
             for result in task.data:
-                if result["percent"] == 100 and result["state"] == 5:
+                if result["percent"] == 100 and result["state"] >= 5:
                     return False
                 
                 if result["percent"] == 100 and result["state"] <= 4:
