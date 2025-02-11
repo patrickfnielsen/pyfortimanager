@@ -267,7 +267,7 @@ class FortiGates(BaseModel):
 
         return self.post(method="exec", params=params)
 
-    def replace(self, fortigate: str, new_serial: str, adom: str = None):
+    def replace(self, fortigate: str, old_serial: str, new_serial: str, admin_user: str, admin_password: str, adom: str = None):
         """Replaces a FortiGate with another.
 
         Args:
@@ -280,13 +280,21 @@ class FortiGates(BaseModel):
         """
 
         params = {
-            "url": f"/dvmdb/adom/{adom or self.api.adom}/device/replace/sn/{fortigate}",
-            "data": {
-                "sn": new_serial,
-            }
+            "url": f"/dvmdb/adom/{adom or self.api.adom}/device/{fortigate}/onboard_rule",
+            "data": [
+				{
+					"sn": new_serial,
+					"old_sn": old_serial,
+					"adm_usr": admin_user,
+					"adm_pass": admin_password,
+					"name": f"_RMA_{old_serial}",
+					"type": 1,
+					"flags": 1
+				}
+			]
         }
 
-        return self.post(method="exec", params=params)
+        return self.post(method="set", params=params)
 
     def meta_variables(self, fortigate: str = None, adom: str = None):
         """Retrieves all metadata variables for a fortigate.
