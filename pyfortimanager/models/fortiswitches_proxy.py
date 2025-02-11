@@ -13,7 +13,7 @@ class FortiSwitchesProxy(BaseModel):
 
         Args:
             fortigate (str): Name of the FortiGate.
-            switch_id (str, optional): Serial number of a specific FortiSwitch.
+            switch_id (str, optional): Name of a specific FortiSwitch.
             adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
             timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
 
@@ -43,7 +43,7 @@ class FortiSwitchesProxy(BaseModel):
         """Authorizes a FortiSwitch on the FortiGate.
 
         Args:
-            switch_id (str): Serial number of the FortiSwitch to authorize.
+            switch_id (str): Name of the FortiSwitch to authorize.
             fortigate (str): Name of the FortiGate.
             vdom (str): Name of the virtual domain for the FortiGate.
             adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
@@ -77,7 +77,7 @@ class FortiSwitchesProxy(BaseModel):
         """Deauthorizes a FortiSwitch on the FortiGate.
 
         Args:
-            switch_id (str): Serial number of the FortiSwitch to deauthorize.
+            switch_id (str): Name of the FortiSwitch to deauthorize.
             fortigate (str): Name of the FortiGate.
             vdom (str): Name of the virtual domain for the FortiGate.
             adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
@@ -111,7 +111,7 @@ class FortiSwitchesProxy(BaseModel):
         """Restarts a FortiSwitch.
 
         Args:
-            switch_id (str): Serial number of the FortiSwitch to restart.
+            switch_id (str): Name of the FortiSwitch to restart.
             fortigate (str): Name of the FortiGate.
             vdom (str): Name of the virtual domain for the FortiGate.
             adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
@@ -144,7 +144,7 @@ class FortiSwitchesProxy(BaseModel):
         """Bounce a FortiSwitch port.
 
         Args:
-            switch_id (str): Serial number of the FortiSwitch to restart.
+            switch_id (str): Name of the FortiSwitch to restart.
             switch_port (str): Switch port id
             fortigate (str): Name of the FortiGate.
             duration (int): Duration in seconds for the port to be down
