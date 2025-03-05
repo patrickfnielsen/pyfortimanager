@@ -187,6 +187,90 @@ class FortiGates(BaseModel):
 
         return self.post(method="exec", params=params)
 
+    def add_cluster(self, serial: str, serial_secondary: str, mr: int, os_ver: int, name: str = None,
+                    priority_primary: int = 200, priority_secondary: int = 100, ha_mode: str = "AP", mgmt_mode: str = "fmg", ha_group_id: int = 1,
+                    os_type: str = "fos", adm_usr: str = None, adm_pass: str = None, description: str = None, meta_fields: dict = None,
+                    flags: int = 67371040, prefer_img_ver: str = None, adom: str = None):
+        """Adds a new FortiGate cluster as a model device in FortiManager.
+
+        Args:
+            name (str): Name of the FortiGate. Default is serial number.
+            serial (str): Serial number of the FortiGate.
+            serial_secondary (str): Serial number of the secondary FortiGate.
+            mr (int): Minor OS version.
+            os_ver (int): Major OS version.
+            os_type (str): fos, fsw, foc, fml, faz, fwb, fch, fct, log, fmg, fsa, fdd, fac, fpx, fna, ffw, fsr, fad, fdc, fap, fxt, fts, fai, fwc, fis, fed. Default is fos.
+            mgmt_mode (str): unreg, fmg, faz, fmgfaz. Default is fmg.
+            ha_group_id (int): HA group ID. Default is 1.
+            priority_primary (int): Priority of the primary foritgate. Default is 200.
+            priority_secondary (int): Priority of the secondary foritgate. Default is 100.
+            ha_mode(str): HA mode. Default is AP.
+            flags (int): Various settings in the "Add Device"-dialog in FortiManager. Use FortiManager to retrieve a specific combination. Default is 67371040.
+            adm_usr (str, optional): Default admin username.
+            adm_pass (str, optional): Default admin password.
+            description (str, optional): Description of the FortiGate.
+            meta_fields (dict, optional): Meta fields for the FortiGate. Default is fmg.
+            prefer_img_ver (str, optional): Enforce the firmware version of the FortiGate. Ex. 7.0.9-b444.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/dvm/cmd/add/device",
+            "data": {
+                "adom": adom or self.api.adom,
+                "device": {
+                    "ha_group_name": name or serial,
+                    "ha_group_id": ha_group_id,
+                    "ha_mode": ha_mode,
+                    "ha_slave": [
+                        {
+                            "idx": 0,
+                            "name": name or serial,
+                            "prio": priority_primary,
+                            "role": "master",
+                            "sn": serial
+                        },
+                        {
+                            "idx": 1,
+                            "name": f"{name or serial}-1",
+                            "prio": priority_secondary,
+                            "role": "slave",
+                            "sn": serial_secondary
+                        }
+                    ],
+                    "flags": flags,
+                    "mgmt_mode": mgmt_mode,
+                    "mr": mr,
+                    "name": name or serial,
+                    "os_type": os_type,
+                    "os_ver": os_ver,
+                    "sn": serial
+                }
+            }
+        }
+
+        # Optional fields
+        if adm_usr:
+            params['data']['device']['adm_usr'] = adm_usr
+
+        if adm_pass:
+            params['data']['device']['adm_pass'] = adm_pass
+
+        if description:
+            params['data']['device']['desc'] = description
+
+        if meta_fields:
+            params['data']['device']['meta fields'] = meta_fields
+
+        if prefer_img_ver:
+            params['data']['device']['prefer_img_ver'] = prefer_img_ver
+
+        return self.post(method="exec", params=params)
+
+
     def update(self, fortigate: str, meta_fields: dict = None, adm_pass: str = None, adm_usr: str = None, description: str = None, ip: str = None, latitude: float = None, longitude: float = None, name: str = None, hostname: str = None, prefer_img_ver: str = None, adom: str = None):
         """Updates a FortiGate.
 
