@@ -67,6 +67,7 @@ class BaseModel:
 
         data = {
             "method": method.lower(),
+            "verbose": 1 if self.api.verbose else 0,
             "params": [params]
         }
 
