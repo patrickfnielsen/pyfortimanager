@@ -304,3 +304,30 @@ class FortiGatesProxy(BaseModel):
         }
 
         return self.post(method="exec", params=params)
+
+    def get_matched_devices(self, fortigate: str, adom: str = None, vdom: str = "*", include_dynamic: bool = True, timeout: int = None):
+        """Retrieves a list of matches devices on a given FortiGate.
+
+        Args:
+            fortigate (str): Name of the FortiGate.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+            timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": f"/api/v2/monitor/switch-controller/managed-switch/matched-device?include_dynamic={include_dynamic}&vdom={vdom}"
+                }
+        }
+
+        return self.post(method="exec", params=params)
