@@ -326,7 +326,7 @@ class FortiGatesProxy(BaseModel):
                     ],
                     "action": "get",
                     "timeout": timeout or self.api.proxy_timeout,
-                    "resource": f"/api/v2/monitor/switch-controller/matched-device?include_dynamic={include_dynamic}&vdom={vdom}"
+                    "resource": f"/api/v2/monitor/switch-controller/matched-devices?include_dynamic={include_dynamic}&vdom={vdom}"
                 }
         }
 
