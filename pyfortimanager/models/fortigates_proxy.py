@@ -331,3 +331,34 @@ class FortiGatesProxy(BaseModel):
         }
 
         return self.post(method="exec", params=params)
+
+    def query_logs(self, fortigate: str, adom: str = None, vdom: str = "root", filter: str = "", start: int = 0, rows: int = 500, timeout: int = None):
+        """Queries firewall logs of given FortiGate.
+
+        Args:
+            fortigate (str): Name of the FortiGate.
+            adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
+            vdom (str): Name of the VDOM. Defaults to "root".
+            filter (str): Filter to apply to the logs. Defaults to "".
+            start (int): Starting index for the logs. Defaults to 0.
+            rows (int): Number of rows to retrieve. Defaults to 500.
+            timeout (int, optional): How long to wait for the FortiGate to respond. Defaults to the proxy_timeout set when the API was instantiated.
+
+        Returns:
+            dict: JSON data.
+        """
+
+        params = {
+            "url": "/sys/proxy/json",
+            "data":
+                {
+                    "target": [
+                        f"/adom/{adom or self.api.adom}/device/{fortigate}"
+                    ],
+                    "action": "get",
+                    "timeout": timeout or self.api.proxy_timeout,
+                    "resource": f"/api/v2/log/memory/traffic/forward?filter={filter}&start={start}&rows={rows}&vdom={vdom}"
+                }
+        }
+
+        return self.post(method="exec", params=params)
