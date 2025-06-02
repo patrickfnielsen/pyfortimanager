@@ -150,6 +150,7 @@ class FortiGates(BaseModel):
             adom (str): Name of the ADOM. Defaults to the ADOM set when the API was instantiated.
             branch_pt (int, optional): Branch point.
             build (int, optional): Build number.
+            blueprint (str, optional): Device blueprint to use.
 
         Returns:
             dict: JSON data.
