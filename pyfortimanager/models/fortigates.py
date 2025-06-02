@@ -131,7 +131,7 @@ class FortiGates(BaseModel):
 
         return self.post(method="get", params=params)
 
-    def add(self, serial: str, mr: int, os_ver: int, name: str = None, mgmt_mode: str = "fmg", os_type: str = "fos", adm_usr: str = None, adm_pass: str = None, description: str = None, meta_fields: dict = None, flags: int = 67371040, prefer_img_ver: str = None, adom: str = None, branch_pt: int = None, build: int = None):
+    def add(self, serial: str, mr: int, os_ver: int, name: str = None, mgmt_mode: str = "fmg", os_type: str = "fos", adm_usr: str = None, adm_pass: str = None, description: str = None, meta_fields: dict = None, flags: int = 67371040, prefer_img_ver: str = None, adom: str = None, branch_pt: int = None, build: int = None, enforce_config: bool = False):
         """Adds a new FortiGate as a model device in FortiManager.
 
         Args:
@@ -166,7 +166,11 @@ class FortiGates(BaseModel):
                     "name": name or serial,
                     "os_type": os_type,
                     "os_ver": os_ver,
-                    "sn": serial
+                    "sn": serial,
+                    "device blueprint":{
+                        "linked-to-model": True,
+                        "enforce-device-config": 1 if enforce_config else 0,
+                    },
                 }
             }
         }
