@@ -283,7 +283,7 @@ class FortiGates(BaseModel):
         return self.post(method="exec", params=params)
 
 
-    def update(self, fortigate: str, meta_fields: dict = None, adm_pass: str = None, adm_usr: str = None, description: str = None, ip: str = None, latitude: float = None, longitude: float = None, name: str = None, hostname: str = None, prefer_img_ver: str = None, adom: str = None):
+    def update(self, fortigate: str, meta_fields: dict = None, adm_pass: str = None, adm_usr: str = None, description: str = None, ip: str = None, latitude: float = None, longitude: float = None, name: str = None, hostname: str = None, prefer_img_ver: str = None, adom: str = None, flags: Optional[list[str]] = None):
         """Updates a FortiGate.
 
         Args:
@@ -339,6 +339,9 @@ class FortiGates(BaseModel):
 
         if prefer_img_ver:
             params['data']['device']['prefer_img_ver'] = prefer_img_ver
+
+        if flags:
+            params['data']['flags'] = flags
 
         return self.post(method="update", params=params)
 
